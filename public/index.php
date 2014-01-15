@@ -16,21 +16,23 @@ require __DIR__ . "/../app/config/loader.php";
 
 try {
 
-/**
- * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
- */
-$di = new \Phalcon\DI\FactoryDefault();
+    /**
+     * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
+     */
+    $di = new \Phalcon\DI\FactoryDefault();
 
-/**
- * Include the application services
- */
-require __DIR__ . "/../app/config/services.php";
+    /**
+     * Include the application services
+     */
+    require __DIR__ . "/../app/config/services.php";
 
-/**
- * Handle the request
- */
-$application = new Phalcon\Mvc\Application($di);
+    /**
+     * Handle the request
+     */
+    $application = new Phalcon\Mvc\Application($di);
 
-echo $application->handle()->getContent();
+    echo $application->handle()->getContent();
 
-} catch (Exception $e) { echo 'Sorry, an error has ocurred :('; }
+} catch (Exception $e) {
+    echo 'Sorry, an error has ocurred :(';
+}

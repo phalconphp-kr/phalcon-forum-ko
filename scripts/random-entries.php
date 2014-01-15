@@ -6,21 +6,17 @@
 
 require 'cli-bootstrap.php';
 
+$faker = Faker\Factory::create();
 
-for ( $i = 0; $i <= 20; $i++ ) {
+for ($i = 0; $i <= 20; $i++) {
 
-    $title   = Phalcon\Text::random(Phalcon\Text::RANDOM_ALNUM , 50);
-    $content = Phalcon\Text::random(Phalcon\Text::RANDOM_ALNUM , 265);
-
-    $title   = chunk_split($title , rand(3 , 10) , ' ');
-    $content = chunk_split($content , rand(3 , 10) , ' ');
-
+    $title = $faker->company;
 
     $post       = new Phosphorum\Models\Categories();
     $post->name = $title;
     $post->slug = Phalcon\Tag::friendlyTitle($title);
 
-    if ( !$post->save() ) {
+    if (!$post->save()) {
 
         var_dump($post->getMessages());
         break;
@@ -28,22 +24,25 @@ for ( $i = 0; $i <= 20; $i++ ) {
 
 }
 
-for ( $i = 0; $i <= 500; $i++ ) {
 
-    $title   = Phalcon\Text::random(Phalcon\Text::RANDOM_ALNUM , 50);
-    $content = Phalcon\Text::random(Phalcon\Text::RANDOM_ALNUM , 265);
+$categoryIds = Phosphorum\Models\Categories::find(['columns' => 'id'])->toArray();
 
-    $title   = chunk_split($title , rand(3 , 10) , ' ');
-    $content = chunk_split($content , rand(3 , 10) , ' ');
 
-    $post                = new Phosphorum\Models\Posts();
-    $post->title         = $title;
-    $post->slug          = Phalcon\Tag::friendlyTitle($title);
-    $post->content       = $content;
-    $post->users_id      = 1;
-    $post->categories_id = mt_rand(1 , 20);
+for ($i = 0; $i <= 500; $i++) {
 
-    if ( !$post->save() ) {
+    $title   = $faker->company;
+    $content = $faker->text();
+
+    $post           = new Phosphorum\Models\Posts();
+    $post->title    = $title;
+    $post->slug     = Phalcon\Tag::friendlyTitle($title);
+    $post->content  = $content;
+    $post->users_id = 1;
+
+    $id                  = array_rand($categoryIds);
+    $post->categories_id = $categoryIds[$id]['id'];
+
+    if (!$post->save()) {
 
         var_dump($post->getMessages());
         break;
@@ -51,7 +50,7 @@ for ( $i = 0; $i <= 500; $i++ ) {
 
     $post->category->number_posts++;
 
-    if ( !$post->category->save() ) {
+    if (!$post->category->save()) {
 
         var_dump($post->category->getMessages());
         break;

@@ -6,7 +6,7 @@ return new \Phalcon\Config(array(
         'host'     => 'localhost',
         'username' => 'root',
         'password' => '',
-        'name'     => 'phalcon_forum',
+        'name'     => 'forum',
     ),
     'application' => array(
         'controllersDir' => __DIR__ . '/../../app/controllers/',
@@ -22,9 +22,9 @@ return new \Phalcon\Config(array(
         )
     ),
     'github'      => array(
-        'clientId'     => '7968d916b0585a7fcc0c',
-        'clientSecret' => 'c2be4cdaf132ec31814479de0ff46bf833a9375c',
-        'redirectUri'  => 'http://phalcon-forum.local/forum/login/oauth/access_token'
+        'clientId'     => '',
+        'clientSecret' => '',
+        'redirectUri'  => 'http://forum.phalconphp.com/forum/login/oauth/access_token'
     ),
     'amazon'      => array(
         'AWSAccessKeyId' => '',

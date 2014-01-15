@@ -7,6 +7,8 @@
 error_reporting(E_ALL);
 set_time_limit(0);
 
+$config = include __DIR__ . "/../vendor/autoload.php";
+
 /**
  * Read the configuration
  */
