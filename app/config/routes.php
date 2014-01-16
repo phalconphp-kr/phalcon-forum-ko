@@ -2,6 +2,7 @@
 
 $router = new Phalcon\Mvc\Router(false);
 
+$router->removeExtraSlashes(true);
 $router->setDefaultNamespace('Phosphorum\Controllers');
 
 $router->add('/sitemap', array(
