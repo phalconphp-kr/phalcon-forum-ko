@@ -2,11 +2,14 @@
 
 namespace Phosphorum\Controllers;
 
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Controller;
 use Phosphorum\Github\OAuth;
 use Phosphorum\Github\Users as GithubUsers;
 use Phosphorum\Models\Users as ForumUsers;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Controller;
+use Phosphorum\Models\Posts;
+use Phosphorum\Models\PostsReplies;
+use Phosphorum\Models\Activities;
 
 /**
  * Class SessionController
@@ -148,4 +151,87 @@ class UsersController extends Controller
         $this->session->set('identity-timezone', 'America/Bogota');
     }
 
+    /**
+     * Shows the user profile
+     *
+     * @param $id
+     * @param $username
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function profileAction($id, $username)
+    {
+        if ($id) {
+            $user = ForumUsers::findFirstById($id);
+        } else {
+            $user = ForumUsers::findFirstByLogin($username);
+        }
+
+        if (!$user) {
+            $this->flashSession->error('The user does not exist');
+            return $this->response->redirect();
+        }
+
+        $this->view->user = $user;
+
+        $parametersPosts         = array(
+            'users_id = ?0',
+            'bind' => array($user->id)
+        );
+        $this->view->numberPosts = Posts::count($parametersPosts);
+
+        $parametersPostsReplies    = array(
+            'users_id = ?0',
+            'bind' => array($user->id)
+        );
+        $this->view->numberReplies = PostsReplies::count($parametersPostsReplies);
+
+        $parametersActivities   = array(
+            'users_id = ?0',
+            'bind'  => array($id),
+            'order' => 'created_at DESC',
+            'limit' => 15
+        );
+        $this->view->activities = Activities::find($parametersActivities);
+
+        $this->tag->setTitle('Profile');
+    }
+
+    /**
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function settingsAction()
+    {
+
+        $usersId = $this->session->get('identity');
+        if (!$usersId) {
+            $this->flashSession->error('You must be logged first');
+            return $this->response->redirect();
+        }
+
+        $user = ForumUsers::findFirstById($usersId);
+        if (!$user) {
+            $this->flashSession->error('The user does not exist');
+            return $this->response->redirect();
+        }
+
+        if ($this->request->isPost()) {
+            $user->timezone      = $this->request->getPost('timezone');
+            $user->notifications = $this->request->getPost('notifications');
+            if ($user->save()) {
+                $this->session->get('timezone', $user->timezone);
+                $this->flashSession->success('Settings were successfully updated');
+                return $this->response->redirect();
+            }
+        } else {
+            $this->tag->displayTo('timezone', $user->timezone);
+            $this->tag->displayTo('notifications', $user->notifications);
+        }
+
+        $this->tag->setTitle('My Settings');
+        $this->tag->setAutoEscape(false);
+
+        $this->view->user      = $user;
+        $this->view->timezones = $this->timezones;
+    }
 }

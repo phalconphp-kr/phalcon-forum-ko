@@ -20,7 +20,7 @@ $router->add('/search', array(
 ));
 
 $router->add('/settings', array(
-	'controller' => 'discussions',
+	'controller' => 'users',
 	'action' => 'settings'
 ));
 
@@ -60,8 +60,8 @@ $router->add('/edit/discussion/{id:[0-9]+}', array(
 ));
 
 $router->add('/user/{id:[0-9]+}/{login}', array(
-	'controller' => 'discussions',
-	'action' => 'user'
+	'controller' => 'users',
+	'action' => 'profile'
 ));
 
 $router->add('/category/{id:[0-9]+}/{slug}', array(
