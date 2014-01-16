@@ -179,6 +179,7 @@ class Posts extends Model
         $modifiedAt = new \DateTime();
         $modifiedAt->setTimezone(new \DateTimeZone('UTC'));
         $modifiedAt->setTimestamp($this->modified_at);
+
         return $modifiedAt->format('Y-m-d\TH:i:s\Z');
     }
 }

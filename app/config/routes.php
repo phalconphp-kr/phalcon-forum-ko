@@ -95,7 +95,7 @@ $router->add('/discussions/{order:[a-z]+}/{offset:[0-9]+}', array(
 $router->add('/discussion/{id:[0-9]+}/{slug}', array(
 	'controller' => 'discussions',
 	'action' => 'view'
-));
+))->setName('page-discussion');
 
 $router->add('/', array(
 	'controller' => 'discussions',

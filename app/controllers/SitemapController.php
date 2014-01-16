@@ -2,58 +2,69 @@
 
 namespace Phosphorum\Controllers;
 
-use Phosphorum\Models\Posts,
-	Phosphorum\Models\PostsReplies,
-	Phalcon\Http\Response;
+use Phosphorum\Models\Posts;
+use Phalcon\Http\Response;
+use \Phalcon\Mvc\Controller;
 
-class SitemapController extends \Phalcon\Mvc\Controller
+/**
+ * Class SitemapController
+ *
+ * @package Phosphorum\Controllers
+ */
+class SitemapController extends Controller
 {
 
-	public function initialize()
-	{
-		$this->view->disable();
-	}
+    public function initialize()
+    {
+        $this->view->disable();
+    }
 
-	/**
-	 * Generate the website sitemap
-	 *
-	 */
-	public function indexAction()
-	{
+    /**
+     * Generate the website sitemap
+     *
+     * @return Response
+     */
+    public function indexAction()
+    {
 
-		$response = new Response();
+        $sitemap = new \DOMDocument("1.0", "UTF-8");
 
-		$expireDate = new \DateTime();
-		$expireDate->modify('+1 day');
+        $urlset = $sitemap->createElement('urlset');
+        $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
-		$response->setExpires($expireDate);
+        $url = $sitemap->createElement('url');
+        $url->appendChild($sitemap->createElement('loc', $this->url->getBaseUri()));
+        $url->appendChild($sitemap->createElement('changefreq', 'daily'));
+        $url->appendChild($sitemap->createElement('priority', '1.0'));
+        $urlset->appendChild($url);
 
-		$response->setHeader('Content-Type', "application/xml; charset=UTF-8");
+        /** @var Posts[] $posts */
+        $posts = Posts::find(array('order' => 'number_replies DESC'));
 
-		$sitemap = new \DOMDocument("1.0", "UTF-8");
+        foreach ($posts as $post) {
+            $url       = $sitemap->createElement('url');
+            $urlParams = array('for' => 'page-discussion', 'id' => $post->id, 'slug' => $post->slug);
+            $href      = $this->url->get($urlParams);
+            $url->appendChild($sitemap->createElement('loc', $href));
+            $url->appendChild($sitemap->createElement('priority', '0.8'));
+            $url->appendChild($sitemap->createElement('lastmod', $post->getUTCModifiedAt()));
+            $urlset->appendChild($url);
+        }
 
-		$urlset = $sitemap->createElement('urlset');
-		$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-		$urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $sitemap->appendChild($urlset);
 
-		$url = $sitemap->createElement('url');
-		$url->appendChild($sitemap->createElement('loc', 'http://forum.phalconphp.com/'));
-		$url->appendChild($sitemap->createElement('changefreq', 'daily'));
-		$url->appendChild($sitemap->createElement('priority', '1.0'));
-		$urlset->appendChild($url);
+        $response = new Response();
 
-		foreach (Posts::find(array('order' => 'number_replies DESC')) as $post) {
-			$url = $sitemap->createElement('url');
-			$url->appendChild($sitemap->createElement('loc', 'http://forum.phalconphp.com/discussion/' . $post->id . '/' . $post->slug));
-			$url->appendChild($sitemap->createElement('priority', '0.8'));
-			$url->appendChild($sitemap->createElement('lastmod', $post->getUTCModifiedAt()));
-			$urlset->appendChild($url);
-		}
+        $expireDate = new \DateTime();
+        $expireDate->modify('+1 day');
 
-		$sitemap->appendChild($urlset);
+        $response->setExpires($expireDate);
 
-		$response->setContent($sitemap->saveXML());
-		return $response;
-	}
+        $response->setHeader('Content-Type', "application/xml; charset=UTF-8");
 
+        $response->setContent($sitemap->saveXML());
+
+        return $response;
+    }
 }

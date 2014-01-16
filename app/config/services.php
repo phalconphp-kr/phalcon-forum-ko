@@ -18,14 +18,14 @@ $di->set(
  */
 $di->set(
    'volt',
-       function ($view, $di) {
+       function ($view, $di){
 
            $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
            $volt->setOptions(
                 array(
                     "compiledPath"      => __DIR__ . "/../cache/volt/",
-                    "compiledSeparator" => "_"
+                    "compiledSeparator" => "_",
                 )
            );
 
@@ -74,12 +74,7 @@ $di->set(
                }
            });*/
 
-           $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-               "host"     => $config->database->host,
-               "username" => $config->database->username,
-               "password" => $config->database->password,
-               "dbname"   => $config->database->name
-           ));
+           $connection = new \Phalcon\Db\Adapter\Pdo\Mysql($config->database->toArray());
 
            //Assign the eventsManager to the db adapter instance
            //$connection->setEventsManager($eventsManager);
