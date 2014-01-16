@@ -43,9 +43,9 @@ class SitemapController extends Controller
         $posts = Posts::find(array('order' => 'number_replies DESC'));
 
         foreach ($posts as $post) {
-            $url       = $sitemap->createElement('url');
-            $urlParams = array('for' => 'page-discussion', 'id' => $post->id, 'slug' => $post->slug);
-            $href      = $this->url->get($urlParams);
+            $url        = $sitemap->createElement('url');
+            $hrefParams = array('for' => 'page-discussion', 'id' => $post->id, 'slug' => $post->slug);
+            $href       = $this->url->get($hrefParams);
             $url->appendChild($sitemap->createElement('loc', $href));
             $url->appendChild($sitemap->createElement('priority', '0.8'));
             $url->appendChild($sitemap->createElement('lastmod', $post->getUTCModifiedAt()));

@@ -10,7 +10,7 @@ use Phalcon\Mvc\Model\Behavior\Timestampable;
  *
  * @package Phosphorum\Models
  * @property \Phosphorum\Models\Posts $post
- * @property \Phosphorum\Models\Users $user
+ * @property $user \Phosphorum\Models\Users
  */
 class PostsReplies extends Model
 {
@@ -63,6 +63,7 @@ class PostsReplies extends Model
      */
     public function afterCreate()
     {
+
         if ($this->id > 0) {
 
             $activity           = new Activities();

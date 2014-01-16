@@ -2,110 +2,144 @@
 
 namespace Phosphorum\Controllers;
 
-use Phosphorum\Models\Posts,
-	Phosphorum\Models\PostsReplies,
-	Phalcon\Http\Response;
+use Phosphorum\Models\Posts;
+use Phosphorum\Models\PostsReplies;
+use    Phalcon\Http\Response;
+use Phalcon\Mvc\Controller;
 
-class RepliesController extends \Phalcon\Mvc\Controller
+/**
+ * Class RepliesController
+ *
+ * @package Phosphorum\Controllers
+ */
+class RepliesController extends Controller
 {
 
-	public function initialize()
-	{
-		$this->view->disable();
-	}
+    /**
+     *
+     */
+    public function initialize()
+    {
+        $this->view->disable();
+    }
 
-	/**
-	 * Returs the raw comment as it as edited
-	 *
-	 * @param int $id
-	 */
-	public function getAction($id)
-	{
+    /**
+     * Returs the raw comment as it as edited
+     *
+     * @param $id
+     *
+     * @return Response
+     */
+    public function getAction($id)
+    {
 
-		$response = new Response();
+        $response = new Response();
 
-		$usersId = $this->session->get('identity');
-		if (!$usersId) {
-			$response->setStatusCode('401', 'Unauthorized');
-			return $response;
-		}
+        $usersId = $this->session->get('identity');
+        if (!$usersId) {
+            $response->setStatusCode('401', 'Unauthorized');
+            return $response;
+        }
 
-		$postReply = PostsReplies::findFirst(array(
-			'id = ?0 AND users_id = ?1',
-			'bind' => array($id, $usersId)
-		));
-		if ($postReply) {
-			$data = array('status' => 'OK', 'id' => $postReply->id, 'comment' => $postReply->content);
-		} else {
-			$data = array('status' => 'ERROR');
-		}
+        $parameters = array(
+            'id = ?0 AND users_id = ?1',
+            'bind' => array($id, $usersId)
+        );
+        /** @var PostsReplies $postReply */
+        $postReply = PostsReplies::findFirst($parameters);
+        if ($postReply) {
+            $data = array('status' => 'OK', 'id' => $postReply->id, 'comment' => $postReply->content);
+        } else {
+            $data = array('status' => 'ERROR');
+        }
 
-		$response->setContent(json_encode($data));
-		return $response;
-	}
+        $response->setJsonContent($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+        return $response;
+    }
 
-	/**
-	 * Updates a reply
-	 */
-	public function updateAction()
-	{
+    /**
+     * Updates a reply
+     */
+    public function updateAction()
+    {
 
-		$usersId = $this->session->get('identity');
-		if (!$usersId) {
-			return $this->response->redirect();
-		}
+        $usersId = $this->session->get('identity');
+        if (!$usersId) {
+            return $this->response->redirect();
+        }
 
-		if (!$this->request->isPost()) {
-			return $this->response->redirect();
-		}
+        if (!$this->request->isPost()) {
+            return $this->response->redirect();
+        }
 
-		$postReply = PostsReplies::findFirst(array(
-			'id = ?0 AND users_id = ?1',
-			'bind' => array($this->request->getPost('id'), $usersId)
-		));
-		if (!$postReply) {
-			return $this->response->redirect();
-		}
+        $parameters = array(
+            'id = ?0 AND users_id = ?1',
+            'bind' => array($this->request->getPost('id'), $usersId)
+        );
+        /** @var PostsReplies $postReply */
+        $postReply = PostsReplies::findFirst($parameters);
+        if (!$postReply) {
+            return $this->response->redirect();
+        }
 
-		$content = $this->request->getPost('content');
-		if (trim($content)) {
-			$postReply->content = $content;
-			$postReply->save();
-		}
+        $content = $this->request->getPost('content');
+        if (trim($content)) {
+            $postReply->content = $content;
+            $postReply->save();
+        }
 
-		return $this->response->redirect('discussion/' . $postReply->post->id . '/' . $postReply->post->slug . '#C' . $postReply->id);
-	}
+        $urlParams   = array(
+            'for'  => 'page-discussion',
+            'id'   => $postReply->post->id,
+            'slug' => $postReply->post->slug
+        );
+        $href        = $this->url->get($urlParams);
+        $redirectUrl = $href . '#C' . $postReply->id;
 
-	/**
-	 * Deletes a reply
-	 *
-	 * @param int $id
-	 */
-	public function deleteAction($id)
-	{
+        return $this->response->redirect($redirectUrl, true);
+    }
 
-		$usersId = $this->session->get('identity');
-		if (!$usersId) {
-			return $this->response->setStatusCode('401', 'Unauthorized');
-		}
+    /**
+     * Deletes a reply
+     *
+     * @param int $id
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function deleteAction($id)
+    {
 
-		$postReply = PostsReplies::findFirst(array(
-			'id = ?0 AND users_id = ?1',
-			'bind' => array($id, $usersId)
-		));
-		if ($postReply) {
+        $userId = $this->session->get('identity');
+        if (!$userId) {
+            return $this->response->setStatusCode('401', 'Unauthorized');
+        }
 
-			if ($postReply->delete()) {
-				if ($usersId != $postReply->post->users_id) {
-					$postReply->post->number_replies--;
-					$postReply->post->save();
-				}
-			}
+        $parameters = array(
+            'id = ?0 AND users_id = ?1',
+            'bind' => array($id, $userId)
+        );
+        /** @var PostsReplies $postReply */
+        $postReply = PostsReplies::findFirst($parameters);
 
-			return $this->response->redirect('discussion/' . $postReply->post->id . '/' . $postReply->post->slug);
-		}
+        if ($postReply) {
 
-		return $this->response->redirect();
-	}
+            if ($postReply->delete()) {
+                if ($userId != $postReply->post->users_id) {
+                    $postReply->post->number_replies--;
+                    $postReply->post->save();
+                }
+            }
 
+            $urlParams   = array(
+                'for'  => 'page-discussion',
+                'id'   => $postReply->post->id,
+                'slug' => $postReply->post->slug
+            );
+            $redirectUrl = $this->url->get($urlParams);
+
+            return $this->response->redirect($redirectUrl, true);
+        }
+
+        return $this->response->redirect();
+    }
 }
