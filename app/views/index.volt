@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		{%- if canonical is defined -%}
-		<link rel="canonical" href="http://forum.phalconphp.com/{{ canonical }}"/>
+		<link rel="canonical" href="{{ canonical }}"/>
 		{%- endif -%}
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300italic,400italic,500italic&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
 		{{- stylesheet_link("css/s.css?v=2") -}}

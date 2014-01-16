@@ -173,3 +173,7 @@ $di->setShared(
            ));
        }
 );
+
+$di->setShared('timezones',function(){
+        return require_once __DIR__.'/timezones.php';
+    });
