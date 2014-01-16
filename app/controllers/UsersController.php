@@ -3,8 +3,8 @@
 namespace Phosphorum\Controllers;
 
 use Phosphorum\Github\OAuth;
-use    Phosphorum\Github\Users as GithubUsers;
-use    Phosphorum\Models\Users as ForumUsers;
+use Phosphorum\Github\Users as GithubUsers;
+use Phosphorum\Models\Users as ForumUsers;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Controller;
 
@@ -13,7 +13,7 @@ use Phalcon\Mvc\Controller;
  *
  * @package Phosphorum\Controllers
  */
-class SessionController extends Controller
+class UsersController extends Controller
 {
 
     /**

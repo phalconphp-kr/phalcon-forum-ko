@@ -25,17 +25,17 @@ $router->add('/settings', array(
 ));
 
 $router->add('/login/oauth/authorize', array(
-	'controller' => 'session',
+	'controller' => 'users',
 	'action' => 'authorize'
 ));
 
 $router->add('/login/oauth/access_token/', array(
-	'controller' => 'session',
+	'controller' => 'users',
 	'action' => 'accessToken'
 ));
 
 $router->add('/logout', array(
-	'controller' => 'session',
+	'controller' => 'users',
 	'action' => 'logout'
 ));
 
