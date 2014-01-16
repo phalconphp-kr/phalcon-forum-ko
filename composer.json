@@ -1,7 +1,7 @@
 {
     "name": "phalcon/forum",
-    "type": "library",
-    "description": "Adapters, prototypes or functionality that can be potentially incorporated to the C-framework.",
+    "type": "application",
+    "description": "Phalcon PHP forum",
     "keywords": ["forum", "phalcon"],
     "homepage": "http://forum.phalconphp.com",
     "license": "BSD-3",
@@ -16,6 +16,7 @@
         "ext-phalcon": "1.3.*",
         "swiftmailer/swiftmailer": ">=4.1.2",
         "amazonwebservices/aws-sdk-for-php": "*",
-        "fzaninotto/faker": "1.4.*@dev"
+        "fzaninotto/faker": "1.4.*@dev",
+        "jmhobbs/swiftmailer-transport-aws-ses": "dev-master"
     }
 }

@@ -68,6 +68,83 @@ class SendSpoolTask extends Phalcon\DI\Injectable
         return $text;
     }
 
+    public function send()
+    {
+        $notifications = Phosphorum\Models\Notifications::find('sent = "N"');
+
+        foreach ($notifications as $notification) {
+
+            $post = $notification->post;
+            $user = $notification->user;
+
+            if ($user->email && $user->notifications != 'N') {
+
+                $message = new Swift_Message('[Phalcon Forum] ' . $post->title);
+                $message->setTo(new Swift_Address($user->email, $user->name));
+
+                if ($notification->type == 'P') {
+                    $originalContent = $post->content;
+                    $escapedContent  = $this->escaper->escapeHtml($post->content);
+                    $message->setFrom(new Swift_Address('phosphorum@phalconphp.com', $post->user->name));
+                } else {
+                    $reply           = $notification->reply;
+                    $originalContent = $reply->content;
+                    $escapedContent  = $this->escaper->escapeHtml($reply->content);
+                    $message->setFrom(new Swift_Address('phosphorum@phalconphp.com', $reply->user->name));
+                }
+
+                $prerifiedContent = $this->prerify($escapedContent);
+                $htmlContent      = nl2br($prerifiedContent);
+
+                $textContent = $originalContent;
+
+                $htmlContent .= '<p style="font-size:small;-webkit-text-size-adjust:none;color:#717171;">';
+                if ($notification->type == 'P') {
+                    $htmlContent
+                        .=
+                        '&mdash;<br>This email works only as notification. Don\'t reply. To join conversation you must view the complete thread on '
+                        . PHP_EOL . '<a href="http://forum.phalconphp.com/discussion/' . $post->id . '/'
+                        . $post->slug . '">Phosphorum</a>. ';
+                } else {
+                    $htmlContent
+                        .=
+                        '&mdash;<br>This email works only as notification. Don\'t reply. To join conversation you must view the complete thread on '
+                        . PHP_EOL . '<a href="http://forum.phalconphp.com/discussion/' . $post->id . '/' . $post->slug
+                        . '#C' . $reply->id . '">Phosphorum</a>. ';
+                }
+                $htmlContent .= PHP_EOL . 'Change your preferences <a href="http://forum.phalconphp.com/settings">here</a>';
+
+                $bodyMessage = new Swift_Message_Part($htmlContent, 'text/html');
+                $bodyMessage->setCharset('UTF-8');
+                $message->attach($bodyMessage);
+
+                $bodyMessage = new Swift_Message_Part($textContent, 'text/plain');
+                $bodyMessage->setCharset('UTF-8');
+                $message->attach($bodyMessage);
+
+                $raw  = '';
+                $data = $message->build();
+                while (false !== $bytes = $data->read()) {
+                    $raw .= $bytes;
+                }
+
+                echo $raw;
+                die;
+
+                if (($sendResponse = $this->amazonSESSend($raw)) !== false) {
+                    $notification->message_id = (string)$sendResponse->SendRawEmailResult->MessageId;
+                }
+            }
+
+            $notification->sent = 'Y';
+            if ($notification->save() == false) {
+                foreach ($notification->getMessages() as $message) {
+                    echo $message->getMessage(), PHP_EOL;
+                }
+            }
+        }
+    }
+
     /**
      *
      */
@@ -152,7 +229,7 @@ class SendSpoolTask extends Phalcon\DI\Injectable
 
 try {
     $task = new SendSpoolTask($config);
-    $task->run();
+    $task->send();
 } catch (Exception $e) {
     echo $e->getTraceAsString();
 }
