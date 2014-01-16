@@ -2,13 +2,24 @@
 
 namespace Phosphorum\Controllers;
 
-class IndexController extends \Phalcon\Mvc\Controller
+use \Phalcon\Mvc\Controller;
+
+/**
+ * Class IndexController
+ *
+ * @package Phosphorum\Controllers
+ */
+class IndexController extends Controller
 {
 
-	public function indexAction()
-	{
-		$this->view->disable();
-		$this->flashSession->error('Page not found');
-		return $this->response->redirect();
-	}
+    /**
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function indexAction()
+    {
+        $this->view->disable();
+        $this->flashSession->error('Page not found');
+
+        return $this->response->redirect();
+    }
 }

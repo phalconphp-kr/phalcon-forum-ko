@@ -3,22 +3,21 @@
 /**
  * The URL component is used to generate all kind of urls in the application
  */
-$di->set(
+$di->setShared(
    'url',
        function () use ($config) {
            $url = new \Phalcon\Mvc\Url();
            $url->setBaseUri($config->application->baseUri);
            return $url;
-       },
-       true
+       }
 );
 
 /**
  * Setting up volt
  */
-$di->set(
+$di->setShared(
    'volt',
-       function ($view, $di){
+       function ($view, $di) {
 
            $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
@@ -30,14 +29,13 @@ $di->set(
            );
 
            return $volt;
-       },
-       true
+       }
 );
 
 /**
  * Setting up the view component
  */
-$di->set(
+$di->setShared(
    'view',
        function () use ($config) {
 
@@ -52,14 +50,13 @@ $di->set(
            );
 
            return $view;
-       },
-       true
+       }
 );
 
 /**
  * Database connection is created based in the parameters defined in the configuration file
  */
-$di->set(
+$di->setShared(
    'db',
        function () use ($config) {
 
@@ -87,50 +84,47 @@ $di->set(
  * If the configuration specify the use of metadata adapter use it or use memory otherwise
  */
 if ($config->debug->enable != true) {
-    $di->set(
+    $di->setShared(
        'modelsMetadata',
            function () use ($config) {
                return new \Phalcon\Mvc\Model\Metadata\Files(array(
                    'metaDataDir' => __DIR__ . '/../cache/metaData/'
                ));
-           },
-           true
+           }
     );
 }
 
 /**
  * Start the session the first time some component request the session service
  */
-$di->set(
+$di->setShared(
    'session',
        function () {
            $session = new \Phalcon\Session\Adapter\Files();
            $session->start();
            return $session;
-       },
-       true
+       }
 );
 
 /**
  * Router
  */
-$di->set(
+$di->setShared(
    'router',
        function () {
            return include __DIR__ . "/routes.php";
-       },
-       true
+       }
 );
 
 /**
  * Register the configuration itself as a service
  */
-$di->set('config', $config);
+$di->setShared('config', $config);
 
 /**
  * Register the flash service with the Twitter Bootstrap classes
  */
-$di->set(
+$di->setShared(
    'flash',
        function () {
            return new Phalcon\Flash\Direct(array(
@@ -144,7 +138,7 @@ $di->set(
 /**
  * Register the session flash service with the Twitter Bootstrap classes
  */
-$di->set(
+$di->setShared(
    'flashSession',
        function () {
            return new Phalcon\Flash\Session(array(
@@ -155,21 +149,11 @@ $di->set(
        }
 );
 
-$di->set(
-   'dispatcher',
-       function () {
-           $dispatcher = new Phalcon\Mvc\Dispatcher();
-           $dispatcher->setDefaultNamespace('Phosphorum\Controllers');
-           return $dispatcher;
-       }
-);
 
 /**
  * View cache
  */
-
-
-$di->set(
+$di->setShared(
    'viewCache',
        function () use ($config) {
 

@@ -2,6 +2,8 @@
 
 $router = new Phalcon\Mvc\Router(false);
 
+$router->setDefaultNamespace('Phosphorum\Controllers');
+
 $router->add('/sitemap', array(
 	'controller' => 'sitemap',
 	'action' => 'index'
