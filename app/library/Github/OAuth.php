@@ -5,105 +5,129 @@ namespace Phosphorum\Github;
 class OAuth extends \Phalcon\DI\Injectable
 {
 
-	protected $_endPointAuthorize = 'https://github.com/login/oauth/authorize';
+    protected $endPointAuthorize = 'https://github.com/login/oauth/authorize';
 
-	protected $_endPointAccessToken = 'https://github.com/login/oauth/access_token';
+    protected $endPointAccessToken = 'https://github.com/login/oauth/access_token';
 
-	protected $_redirectUriAuthorize;
+    protected $redirectUriAuthorize;
 
-	protected $_baseUri;
+    protected $baseUri;
 
-	protected $_clientId;
+    protected $clientId;
 
-	protected $_clientSecret;
+    protected $clientSecret;
 
-	protected $_transport;
+    protected $transport;
 
-	public function __construct($config)
-	{
-		$this->_redirectUriAuthorize = $config->redirectUri;
-		$this->_clientId = $config->clientId;
-		$this->_clientSecret = $config->clientSecret;
-	}
+    /**
+     * @param $config
+     */
+    public function __construct($config)
+    {
+        $this->redirectUriAuthorize = $config->redirectUri;
+        $this->clientId             = $config->clientId;
+        $this->clientSecret         = $config->clientSecret;
+    }
 
-	public function authorize()
-	{
-		$this->view->disable();
+    /**
+     *
+     */
+    public function authorize()
+    {
+        $this->view->disable();
 
-        $key = $this->security->getTokenKey();
+        $key   = $this->security->getTokenKey();
         $token = $this->security->getToken();
 
-		$url = $this->_endPointAuthorize.
-			'?client_id='.$this->_clientId.
-			'&redirect_uri='.$this->_redirectUriAuthorize.
-                urlencode('&statekey=' .$key) . // add the tokenkey as a query param. Then we will be able to use it to check token authenticity
-			'&state='.$token.
-			'&scope=user:email';
-		$this->response->redirect($url, true);
-	}
+        $url
+            =
+            $this->endPointAuthorize . '?client_id=' . $this->clientId . '&redirect_uri=' . $this->redirectUriAuthorize
+            . urlencode('&statekey=' . $key)
+            . // add the tokenkey as a query param. Then we will be able to use it to check token authenticity
+            '&state=' . $token . '&scope=user:email';
 
-	public function accessToken()
-	{
+        $this->response->redirect($url, true);
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public function accessToken()
+    {
 
         // check the securtity - anti csrf token
-        $key=$this->request->getQuery('statekey');
-        $value=$this->request->getQuery('state');
+        $key   = $this->request->getQuery('statekey');
+        $value = $this->request->getQuery('state');
 
-
-        if( ! $this->di->get("security")->checkToken($key,$value))
+        if (!$this->di->get("security")->checkToken($key, $value)) {
             return false;
+        }
 
-		$this->view->disable();
-		$response = $this->send($this->_endPointAccessToken, array(
-			'client_id' => $this->_clientId,
-			'client_secret' => $this->_clientSecret,
-			'code' => $this->request->getQuery('code'),
-			'state' => $this->request->getQuery('state')
-		));
+        $this->view->disable();
+        $parameters = array(
+            'client_id'     => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'code'          => $this->request->getQuery('code'),
+            'state'         => $this->request->getQuery('state')
+        );
 
-		return $response;
-	}
 
-	public function send($url, $parameters, $method=\HttpRequest::METH_POST)
-	{
-		try {
+        $response   = $this->send($this->endPointAccessToken, $parameters);
 
-			$transport = $this->getTransport();
+        return $response;
+    }
 
-			$transport->setHeaders(array(
-				'Accept' => 'application/json'
-			));
+    /**
+     * @param     $url
+     * @param     $parameters
+     * @param int $method
+     *
+     * @return bool|mixed
+     */
+    public function send($url, $parameters, $method = \HttpRequest::METH_POST)
+    {
+        try {
 
-			$transport->setUrl($url);
-			$transport->setMethod($method);
+            $transport = $this->getTransport();
 
-			switch ($method) {
-				case \HttpRequest::METH_POST:
-					$transport->addPostFields($parameters);
-					break;
-				case \HttpRequest::METH_GET:
-					$transport->addQueryData($parameters);
-					break;
-			}
+            $headers = array(
+                'Accept' => 'application/json'
+            );
+            $transport->setHeaders($headers);
 
-			$transport->send();
+            $transport->setUrl($url);
+            $transport->setMethod($method);
 
-			return json_decode($transport->getResponseBody(), true);
+            switch ($method) {
+                case \HttpRequest::METH_POST:
+                    $transport->addPostFields($parameters);
+                    break;
+                case \HttpRequest::METH_GET:
+                    $transport->addQueryData($parameters);
+                    break;
+            }
 
-		} catch (\HttpInvalidParamException $e) {
-			return false;
-		} catch (\HttpRequestException $e) {
-			return false;
-		}
+            $transport->send();
 
-	}
+            return json_decode($transport->getResponseBody(), true);
 
-	public function getTransport()
-	{
-		if (!$this->_transport) {
-			$this->_transport = new \HttpRequest();
-		}
-		return $this->_transport;
-	}
+        } catch (\HttpInvalidParamException $e) {
+            return false;
+        } catch (\HttpRequestException $e) {
+            return false;
+        }
+
+    }
+
+    /**
+     * @return \HttpRequest
+     */
+    public function getTransport()
+    {
+        if (!$this->transport) {
+            $this->transport = new \HttpRequest();
+        }
+        return $this->transport;
+    }
 
 }

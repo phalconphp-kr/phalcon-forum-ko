@@ -2,23 +2,26 @@
 
 namespace Phosphorum\Models;
 
-use Phalcon\Mvc\Model,
-	Phalcon\Mvc\Model\Behavior\Timestampable;
+use Phalcon\Mvc\Model;
 
+/**
+ * Class IrcLog
+ *
+ * @package Phosphorum\Models
+ */
 class IrcLog extends Model
 {
 
-	public $id;
+    public $id;
 
-	public $who;
+    public $who;
 
-	public $content;
+    public $content;
 
-	public $datelog;
+    public $datelog;
 
-	public function initialize()
-	{
-		$this->setSource('irclog');
-	}
-
+    public function initialize()
+    {
+        $this->setSource('irclog');
+    }
 }

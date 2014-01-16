@@ -37,6 +37,7 @@ class SessionController extends \Phalcon\Mvc\Controller
     {
 
     	if (!$this->session->get('identity')) {
+
     		$oauth = new OAuth($this->config->github);
     		return $oauth->authorize();
     	}
@@ -46,9 +47,10 @@ class SessionController extends \Phalcon\Mvc\Controller
 
     public function accessTokenAction()
     {
-    	$oauth = new OAuth($this->config->github);
+        $oauth = new OAuth($this->config->github);
 
     	$response = $oauth->accessToken();
+
     	if (is_array($response)) {
 
 			if (isset($response['error'])) {

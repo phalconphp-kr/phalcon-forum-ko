@@ -2,59 +2,72 @@
 
 namespace Phosphorum\Models;
 
-use Phosphorum\Models\Activities,
-	Phalcon\Mvc\Model,
-	Phalcon\Mvc\Model\Behavior\Timestampable;
+use Phosphorum\Models\Activities;
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Behavior\Timestampable;
 
+/**
+ * Class Users
+ *
+ * @package Phosphorum\Models
+ */
 class Users extends Model
 {
 
-	public $id;
+    public $id;
 
-	public $name;
+    public $name;
 
-	public $login;
+    public $login;
 
-	public $token_type;
+    public $email;
 
-	public $access_token;
+    public $token_type;
 
-	public $gravatar_id;
+    public $access_token;
 
-	public $created_at;
+    public $gravatar_id;
 
-	public $modified_at;
+    public $created_at;
 
-	public $notifications;
+    public $modified_at;
 
-	public $timezone;
+    public $notifications;
 
-	public function initialize()
-	{
-		$this->addBehavior(new Timestampable(array(
-			'beforeCreate' => array(
-				'field' => 'created_at'
-			),
-			'beforeUpdate' => array(
-				'field' => 'modified_at'
-			)
-        )));
-	}
+    public $timezone;
 
-	public function beforeCreate()
-	{
-		$this->notifications = 'P';
-		$this->timezone = 'Europe/London';
-	}
+    public function initialize()
+    {
+        $params = array(
+            'beforeCreate' => array(
+                'field' => 'created_at'
+            ),
+            'beforeUpdate' => array(
+                'field' => 'modified_at'
+            )
+        );
+        $this->addBehavior(new Timestampable($params));
+    }
 
-	public function afterCreate()
-	{
-		if ($this->id > 0) {
-			$activity = new Activities();
-			$activity->users_id = $this->id;
-			$activity->type = 'U';
-			$activity->save();
-		}
-	}
+    /**
+     *
+     */
+    public function beforeCreate()
+    {
+        $this->notifications = 'P';
+        $this->timezone      = 'Europe/London';
+    }
 
+    /**
+     *
+     */
+    public function afterCreate()
+    {
+        if ($this->id > 0) {
+            $activity           = new Activities();
+            $activity->users_id = $this->id;
+            $activity->type     = 'U';
+            $activity->save();
+        }
+    }
 }

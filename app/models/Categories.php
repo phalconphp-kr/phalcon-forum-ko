@@ -4,15 +4,20 @@ namespace Phosphorum\Models;
 
 use Phalcon\Mvc\Model;
 
+/**
+ * Class Categories
+ *
+ * @package Phosphorum\Models
+ */
 class Categories extends Model
 {
 
-	public $id;
+    public $id;
 
-	public $name;
+    public $name;
 
-	public $slug;
+    public $slug;
 
-	public $number_posts;
+    public $number_posts;
 
 }

@@ -27,7 +27,7 @@ return new \Phalcon\Config(array(
     'github'      => array(
         'clientId'     => '7968d916b0585a7fcc0c',
         'clientSecret' => 'c2be4cdaf132ec31814479de0ff46bf833a9375c',
-        'redirectUri'  => 'http://phalcon-forum.local/login/oauth/access_token'
+        'redirectUri'  => 'http://phalcon-forum.local/login/oauth/access_token/'
     ),
     'amazon'      => array(
         'AWSAccessKeyId' => '',
