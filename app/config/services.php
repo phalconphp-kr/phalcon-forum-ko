@@ -174,6 +174,20 @@ $di->setShared(
        }
 );
 
-$di->setShared('timezones',function(){
-        return require_once __DIR__.'/timezones.php';
-    });
+$di->setShared(
+   'timezones',
+       function () {
+           return require_once __DIR__ . '/timezones.php';
+       }
+);
+
+$di->setShared('decoda',function(){
+
+        $code = new \Decoda\Decoda();
+        $code->addFilter(new \Decoda\Filter\CodeFilter());
+        $code->addHook(new \Decoda\Hook\EmoticonHook());
+        $code->addHook(new\Decoda\Hook\CensorHook());
+
+        return $code;
+    }
+);

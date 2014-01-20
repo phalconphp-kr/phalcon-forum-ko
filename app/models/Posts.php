@@ -108,6 +108,9 @@ class Posts extends Model
         $this->views         = $postView;
         $this->created_at    = time();
         $this->modified_at   = time();
+
+        // Decoda parsers
+        $this->content = $this->getDI()->get('decoda')->reset($this->content)->parse();
     }
 
     /**

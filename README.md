@@ -25,7 +25,7 @@ The master branch will always contain the latest stable version. If you wish
 to check older versions or newer ones currently under development, please
 switch to the relevant branch.
 
-Required version: >= 0.9.0
+Required version: >= 1.3.0
 
 Get Started
 -----------
@@ -52,7 +52,7 @@ Uses [Codeception](http://codeception.com) functional tests. Execute:
 
 Detailed output:
 
-    php codecept.phar run --debug    
+    php codecept.phar run --debug
 
 
 License

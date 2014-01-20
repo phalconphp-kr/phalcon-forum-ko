@@ -9,4 +9,5 @@ app/cache/metaData/*.php
 tests/_log/*
 .idea/
 app/config/config.php
+codecept.phar
 composer.lock

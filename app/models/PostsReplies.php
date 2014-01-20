@@ -58,6 +58,11 @@ class PostsReplies extends Model
         $this->addBehavior(new Timestampable($params));
     }
 
+    public function beforeSave()
+    {
+        $this->content = $this->getDI()->get('decoda')->reset($this->content)->parse();
+    }
+
     /**
      *
      */

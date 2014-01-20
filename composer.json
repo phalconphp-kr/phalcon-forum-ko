@@ -17,6 +17,7 @@
         "swiftmailer/swiftmailer": ">=4.1.2",
         "amazonwebservices/aws-sdk-for-php": "*",
         "jmhobbs/swiftmailer-transport-aws-ses": "dev-master",
-        "fzaninotto/faker": "1.4.*@dev"
+        "fzaninotto/faker": "1.4.*@dev",
+        "mjohnson/decoda": "dev-master"
     }
 }

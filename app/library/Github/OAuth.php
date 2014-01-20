@@ -2,7 +2,14 @@
 
 namespace Phosphorum\Github;
 
-class OAuth extends \Phalcon\DI\Injectable
+use \Phalcon\DI\Injectable;
+
+/**
+ * Class OAuth
+ *
+ * @package Phosphorum\Github
+ */
+class OAuth extends Injectable
 {
 
     protected $endPointAuthorize = 'https://github.com/login/oauth/authorize';
@@ -72,7 +79,7 @@ class OAuth extends \Phalcon\DI\Injectable
         );
 
 
-        $response   = $this->send($this->endPointAccessToken, $parameters);
+        $response = $this->send($this->endPointAccessToken, $parameters);
 
         return $response;
     }
@@ -129,5 +136,4 @@ class OAuth extends \Phalcon\DI\Injectable
         }
         return $this->transport;
     }
-
 }

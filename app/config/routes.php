@@ -30,7 +30,7 @@ $router->add('/login/oauth/authorize', array(
 	'action' => 'authorize'
 ));
 
-$router->add('/login/oauth/access_token/', array(
+$router->add('/login/oauth/access_token', array(
 	'controller' => 'users',
 	'action' => 'accessToken'
 ));
