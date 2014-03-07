@@ -3,7 +3,7 @@
 <div class="hot-discussions">
 
 	<div align="left">
-		<h1>Search Results</h1>
+		<h1>검색 결과</h1>
 	</div>
 
 	<div class="row-fluid">

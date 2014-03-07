@@ -298,7 +298,7 @@ var Forum = {
 					prettyPrint();
 				}.bind(this, parent));
 			} else {
-				$('#preview-box', parent).html('Nothing to preview');
+				$('#preview-box', parent).html('미리보기할게 없습니다');
 			};
 			$('#comment-box, #reply-comment-box', parent).hide();
 			$('#preview-box', parent).show();

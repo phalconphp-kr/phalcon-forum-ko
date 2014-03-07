@@ -59,12 +59,12 @@ class Activities extends Model
 			return date('M \'y', $this->created_at);
 		} else {
 			if ($diff > 86400) {
-				return ((int) ($diff / 86400)) . 'd ago';
+				return ((int) ($diff / 86400)) . '일 전에';
 			} else {
 				if ($diff > 3600) {
-					return ((int) ($diff / 3600)) . 'h ago';
+					return ((int) ($diff / 3600)) . '시간 전에';
 				} else {
-					return ((int) ($diff / 60)) . 'm ago';
+					return ((int) ($diff / 60)) . '분 전에';
 				}
 			}
 		}

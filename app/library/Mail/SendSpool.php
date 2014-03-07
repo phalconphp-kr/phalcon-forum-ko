@@ -47,7 +47,7 @@ class SendSpool extends Injectable
 			$reply = true;
 		}
 
-		$from = 'phosphorum@phalconphp.com';
+		$from = 'phosphorum@phalconphp.kr';
 
 		if ($post && $user && $reply) {
 
@@ -78,12 +78,12 @@ class SendSpool extends Injectable
 					$htmlContent .= '<p style="font-size:small;-webkit-text-size-adjust:none;color:#717171;">';
 					if ($notification->type == 'P') {
 						$htmlContent .= '&mdash;<br>Reply to this email directly or view the complete thread on '.
-						PHP_EOL . '<a href="http://forum.phalconphp.com/discussion/' . $post->id. '/' . $post->slug . '">Phosphorum</a>. ';
+						PHP_EOL . '<a href="http://forum.phalconphp.kr/discussion/' . $post->id. '/' . $post->slug . '">Phosphorum</a>. ';
 					} else {
 						$htmlContent .= '&mdash;<br>Reply to this email directly or view the complete thread on '.
-						PHP_EOL . '<a href="http://forum.phalconphp.com/discussion/' . $post->id. '/' . $post->slug . '#C' . $reply->id . '">Phosphorum</a>. ';
+						PHP_EOL . '<a href="http://forum.phalconphp.kr/discussion/' . $post->id. '/' . $post->slug . '#C' . $reply->id . '">Phosphorum</a>. ';
 					}
-					$htmlContent .= PHP_EOL . 'Change your e-mail preferences <a href="http://forum.phalconphp.com/settings">here</a></p>';
+					$htmlContent .= PHP_EOL . 'Change your e-mail preferences <a href="http://forum.phalconphp.kr/settings">here</a></p>';
 
 					$bodyMessage = new \Swift_MimePart($htmlContent, 'text/html');
 					$bodyMessage->setCharset('UTF-8');

@@ -406,10 +406,10 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   margin-left: 1em;
 }
 .editor-statusbar .lines:before {
-  content: 'lines: ';
+  content: '줄수: ';
 }
 .editor-statusbar .words:before {
-  content: 'words: ';
+  content: '단어수: ';
 }
 .editor-preview {
   position: absolute;

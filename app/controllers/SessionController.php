@@ -76,7 +76,7 @@ class SessionController extends Controller
 			$githubUser = new GithubUsers($response['access_token']);
 
 			if (!$githubUser->isValid()) {
-				$this->flashSession->error('Invalid Github response');
+				$this->flashSession->error('Github 에서 잘못된 응답입니다');
 				return $this->indexRedirect();
 			}
 
@@ -116,50 +116,15 @@ class SessionController extends Controller
 			$this->session->set('identity-moderator', $user->moderator);
 
 			if ($user->getOperationMade() == Model::OP_CREATE) {
-				$this->flashSession->success('Welcome ' . $user->name);
+				$this->flashSession->success($user->name.' 환영합니다');
 			} else {
-				$this->flashSession->success('Welcome back ' . $user->name);
-			}
-
-			if (strpos($user->email, '@users.noreply.github.com') !== false) {
-				$this->flashSession->notice('Your current e-mail: ' . $this->escaper->escapeHtml($user->email) . ' does not allow us to send you e-mail notifications');
-			}
-
-			if ($user->getOperationMade() != Model::OP_CREATE) {
-
-				$bounces = NotificationsBounces::find(array(
-					'email = ?0 AND reported = "N"',
-					'bind' => array($user->email)
-				));
-				if (count($bounces)) {
-
-					foreach ($bounces as $bounce) {
-						$bounce->reported = 'Y';
-						$bounce->save();
-					}
-
-					$this->flashSession->notice('We have failed to deliver you some email notifications,
-						this might be caused by an invalid email associated to your Github account or
-						its mail server is rejecting our emails. Your current e-mail is: ' . $this->escaper->escapeHtml($user->email));
-
-					$bounces = NotificationsBounces::find(array(
-						'email = ?0 AND created_at >= ?1',
-						'bind' => array($user->email, time() - 86400 * 7)
-					));
-					if (count($bounces) >= NotificationsBounces::MAX_BOUNCES) {
-						$this->flashSession->notice('Due to a repeated number of email bounces we have disabled email
-							notifications for your email. You can renable them in your settings');
-						$user->notifications = 'N';
-						$user->save();
-					}
-
-				}
+				$this->flashSession->success($user->name.' 다시 돌아오신것을 환영합니다');
 			}
 
 			return $this->discussionsRedirect();
 		}
 
-		$this->flashSession->error('Invalid Github response');
+		$this->flashSession->error('Github 에서 잘못된 응답입니다');
 		return $this->discussionsRedirect();
     }
 
@@ -169,7 +134,7 @@ class SessionController extends Controller
     	$this->session->remove('identity-name');
     	$this->session->remove('identity-moderator');
 
-    	$this->flashSession->success('Goodbye!');
+    	$this->flashSession->success('안녕히 가십시오!');
 		return $this->discussionsRedirect();
     }
 

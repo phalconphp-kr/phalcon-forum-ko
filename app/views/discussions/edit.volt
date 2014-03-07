@@ -3,12 +3,12 @@
 <div class="start-discussion container">
 
 	<ol class="breadcrumb">
-		<li>{{ link_to('', 'Home') }}</a></li>
+		<li>{{ link_to('', '첫화면') }}</a></li>
 		<li>{{ link_to('category/' ~ post.category.id ~ '/' ~ post.category.slug, post.category.name) }}</a></li>
 	</ol>
 
 	<div align="left">
-		<h1>Edit Discussion: {{ post.title|e }}</h1>
+		<h1>게시물 수정: {{ post.title|e }}</h1>
 	</div>
 
 	<div class="row">
@@ -23,7 +23,7 @@
 				</div>
 
 				<div class="form-group">
-					{{ text_field("title", "placeholder": "Title", "class": "form-control") }}
+					{{ text_field("title", "placeholder": "제목", "class": "form-control") }}
 				</div>
 
 				<div class="form-group">
@@ -32,23 +32,23 @@
 
 				<p>
 					<ul class="nav nav-tabs preview-nav">
-						<li class="active"><a href="#" onclick="return false">Write</a></li>
-						<li><a href="#" onclick="return false">Preview</a></li>
-						<li class="pull-right">{{ link_to('help/markdown', 'Help', 'parent': '_new') }}</li>
+						<li class="active"><a href="#" onclick="return false">쓰기</a></li>
+						<li><a href="#" onclick="return false">미리보기</a></li>
+						<li class="pull-right">{{ link_to('help/markdown', '도움말', 'parent': '_new') }}</li>
 					</ul>
 
 					<div id="comment-box">
-						{{ text_area("content", "rows": 15, "placeholder": "Leave the content", "class": "form-control") }}
+						{{ text_area("content", "rows": 15, "placeholder": "이곳에 내용 적기", "class": "form-control") }}
 					</div>
 					<div id="preview-box" style="display:none"></div>
 				</p>
 
 				<p>
 					<div class="pull-left">
-						{{ link_to('discussion/' ~ post.id ~ '/' ~ post.slug , 'Cancel') }}
+						{{ link_to('discussion/' ~ post.id ~ '/' ~ post.slug , '취소') }}
 					</div>
 					<div class="pull-right">
-						<button type="submit" class="btn btn-success">Save</button>
+						<button type="submit" class="btn btn-success">저장</button>
 					</div>
 			  	</p>
 

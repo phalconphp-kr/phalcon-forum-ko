@@ -3,9 +3,9 @@
 {#<div class="sidebar">
 
 	{% if session.get('identity') %}
-		{{ link_to('post/discussion', 'Start a Discussion', 'class': 'btn btn-large btn-info', 'rel': 'nofollow') }}
+		{{ link_to('post/discussion', '글쓰기 시작하기', 'class': 'btn btn-large btn-info', 'rel': 'nofollow') }}
 	{% else %}
-		{{ link_to('login/oauth/authorize', 'Log In with Github', 'class': 'btn btn-large btn-info', 'rel': 'nofollow') }}
+		{{ link_to('login/oauth/authorize', 'Github로 로그인하기', 'class': 'btn btn-large btn-info', 'rel': 'nofollow') }}
 	{% endif %}
 
 	{% cache "sidebar" %}

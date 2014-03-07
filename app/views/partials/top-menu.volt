@@ -14,11 +14,11 @@
 		<div class="collapse navbar-collapse">
 		  <ul class="nav navbar-nav navbar-right">
 			{%- if session.get('identity') -%}
-				<li>{{ link_to('post/discussion', 'Start a Discussion', 'class': 'btn btn-default btn-info', 'rel': 'nofollow') }}</li>
+				<li>{{ link_to('post/discussion', '글쓰기', 'class': 'btn btn-default btn-info', 'rel': 'nofollow') }}</li>
 			{%- else -%}
-				<li>{{ link_to('login/oauth/authorize', 'Log In with Github', 'class': 'btn btn-default btn-info', 'rel': 'nofollow') }}</li>
+				<li>{{ link_to('login/oauth/authorize', 'Github로 로그인하기', 'class': 'btn btn-default btn-info', 'rel': 'nofollow') }}</li>
 			{%- endif -%}
-			<li>{{ link_to('', '<span class="glyphicon glyphicon-comment"></span>', 'title': 'Discussions') }}</li>
+			<li>{{ link_to('', '<span class="glyphicon glyphicon-comment"></span>', 'title': '게시판') }}</li>
 			<li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Search">
           			<span class="glyphicon glyphicon-search"></span> <b class="caret"></b>
@@ -31,7 +31,7 @@
 					</li>
 				</ul>
           	</li>
-			<li>{{ link_to('activity', '<span class="glyphicon glyphicon-eye-open"></span>', 'title': 'Activity') }}</li>
+			<li>{{ link_to('activity', '<span class="glyphicon glyphicon-eye-open"></span>', 'title': '활동') }}</li>
 
 			<li class="dropdown">
 
@@ -54,11 +54,11 @@
 				{% endcache %}
 			</li>
 
-			<li>{{ link_to('help', '<span class="glyphicon glyphicon-question-sign"></span>', 'title': 'Help') }}</li>
+			<li>{{ link_to('help', '<span class="glyphicon glyphicon-question-sign"></span>', 'title': '도움말') }}</li>
 
 			{% if session.get('identity') %}
-			<li>{{ link_to('settings', '<span class="glyphicon glyphicon-cog"></span>', 'title': 'Settings') }}</li>
-			<li>{{ link_to('logout', '<span class="glyphicon glyphicon-off"></span>', 'title': 'Logout') }}</li>
+			<li>{{ link_to('settings', '<span class="glyphicon glyphicon-cog"></span>', 'title': '설정') }}</li>
+			<li>{{ link_to('logout', '<span class="glyphicon glyphicon-off"></span>', 'title': '로그아웃') }}</li>
 			{% endif %}
 		  </ul>
 		</div>

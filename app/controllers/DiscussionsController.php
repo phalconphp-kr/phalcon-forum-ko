@@ -103,14 +103,14 @@ class DiscussionsController extends Controller
 		switch ($order) {
 
 			case 'hot':
-				$this->tag->setTitle('Hot Discussions');
+				$this->tag->setTitle('활발한 글');
 				$userId = $this->session->get('identity');
 				$itemBuilder->orderBy('p.modified_at DESC');
 				$totalBuilder->orderBy('p.modified_at DESC');
 				break;
 
 			case 'my':
-				$this->tag->setTitle('My Discussions');
+				$this->tag->setTitle('나의 글');
 				$userId = $this->session->get('identity');
 				if ($userId) {
 					$params = array($userId);
@@ -120,13 +120,13 @@ class DiscussionsController extends Controller
 				break;
 
 			case 'unanswered':
-				$this->tag->setTitle('Unanswered Discussions');
+				$this->tag->setTitle('답변없는 글');
 				$itemBuilder->where('p.number_replies = 0 AND p.accepted_answer <> "Y"');
 				$totalBuilder->where('p.number_replies = 0 AND p.accepted_answer <> "Y"');
 				break;
 
             case 'answers':
-				$this->tag->setTitle('My Answers');
+				$this->tag->setTitle('나의 답변');
 				$userId = $this->session->get('identity');
 				if ($userId) {
 					$params = array($userId);
@@ -136,7 +136,7 @@ class DiscussionsController extends Controller
 				break;
 
 			default:
-				$this->tag->setTitle('Discussions');
+				$this->tag->setTitle('게시물');
 		}
 
 		$itemBuilder->andWhere('p.deleted = 0');
@@ -168,11 +168,11 @@ class DiscussionsController extends Controller
 	 */
 	public function categoryAction($categoryId, $slug, $offset=0)
 	{
-		$this->tag->setTitle('Discussions');
+		$this->tag->setTitle('게시판');
 
 		$category = Categories::findFirstById($categoryId);
 		if (!$category) {
-			$this->flashSession->notice('The category doesn\'t exist');
+			$this->flashSession->notice('분류가 존재하지 않습니다.');
 			return $this->response->redirect();
 		}
 
@@ -188,7 +188,7 @@ class DiscussionsController extends Controller
 			->execute(array($categoryId));
 
 		if (!count($posts)) {
-			$this->flashSession->notice('There are no posts in category: '.$category->name);
+			$this->flashSession->notice($category->name.'분류에 게시물이 없습니다.');
 			return $this->response->redirect();
 		}
 
@@ -212,12 +212,12 @@ class DiscussionsController extends Controller
 
 		$usersId = $this->session->get('identity');
 		if (!$usersId) {
-			$this->flashSession->error('You must be logged first');
+			$this->flashSession->error('먼저 로그인하셔야 합니다.');
 			return $this->response->redirect();
 		}
 
 
-		$this->tag->setTitle('Start a Discussion');
+		$this->tag->setTitle('글쓰기');
 
 		if ($this->request->isPost()) {
 
@@ -258,7 +258,7 @@ class DiscussionsController extends Controller
 
 		$usersId = $this->session->get('identity');
 		if (!$usersId) {
-			$this->flashSession->error('You must be logged first');
+			$this->flashSession->error('먼저 로그인하셔야 합니다');
 			return $this->response->redirect();
 		}
 
@@ -270,7 +270,7 @@ class DiscussionsController extends Controller
 			"bind" => array($id, $usersId, $this->session->get('identity-moderator'))
 		));
 		if (!$post) {
-			$this->flashSession->error('The discussion does not exist');
+			$this->flashSession->error('이 게시물은 존재하지 않습니다');
 			return $this->response->redirect();
 		}
 
@@ -310,7 +310,7 @@ class DiscussionsController extends Controller
 			$this->tag->displayTo('categoryId', $post->categories_id);
 		}
 
-		$this->tag->setTitle('Edit Discussion: ' . $this->escaper->escapeHtml($post->title));
+		$this->tag->setTitle($this->escaper->escapeHtml($post->title) . ' 게시물 수정하기');
 
 		$this->view->categories = Categories::find(array(
 			'order' => 'name'
@@ -327,7 +327,7 @@ class DiscussionsController extends Controller
 
 		$usersId = $this->session->get('identity');
 		if (!$usersId) {
-			$this->flashSession->error('You must be logged first');
+			$this->flashSession->error('먼저 로그인하셔야 합니다');
 			return $this->response->redirect();
 		}
 
@@ -339,12 +339,12 @@ class DiscussionsController extends Controller
 			"bind" => array($id, $usersId, $this->session->get('identity-moderator'))
 		));
 		if (!$post) {
-			$this->flashSession->error('The discussion does not exist');
+			$this->flashSession->error('이 게시물은 존재하지 않습니다');
 			return $this->response->redirect();
 		}
 
 		if ($post->sticked == 'Y') {
-			$this->flashSession->error('The discussion cannot be deleted because it\'s sticked');
+			$this->flashSession->error('이 게시물은 공지사항이라 지워지지 않습니다.');
 			return $this->response->redirect();
 		}
 
@@ -367,7 +367,7 @@ class DiscussionsController extends Controller
 				$user->save();
 			}
 
-			$this->flashSession->success('Discussion was successfully deleted');
+			$this->flashSession->success('게시물이 성공적으로 삭제되었습니다');
 			return $this->response->redirect();
 		}
 
@@ -392,12 +392,12 @@ class DiscussionsController extends Controller
 			 */
 			$post = Posts::findFirstById($id);
 			if (!$post) {
-				$this->flashSession->error('The discussion does not exist');
+				$this->flashSession->error('이 게시물은 존재하지 않습니다');
 				return $this->response->redirect();
 			}
 
 			if ($post->deleted) {
-				$this->flashSession->error('The discussion is deleted');
+				$this->flashSession->error('게시물이 삭제되었습니다');
 				return $this->response->redirect();
 			}
 
@@ -471,12 +471,12 @@ class DiscussionsController extends Controller
 			 */
 			$post = Posts::findFirstById($this->request->getPost('id'));
 			if (!$post) {
-				$this->flashSession->error('The discussion does not exist');
+				$this->flashSession->error('이 게시물은 존재하지 않습니다');
 				return $this->response->redirect();
 			}
 
 			if ($post->deleted) {
-				$this->flashSession->error('The discussion is deleted');
+				$this->flashSession->error('게시물이 삭제되었습니다');
 				return $this->response->redirect();
 			}
 
@@ -538,7 +538,7 @@ class DiscussionsController extends Controller
 		/**
 		 * Set the post name as title - escaping it first
 		 */
-		$this->tag->setTitle($this->escaper->escapeHtml($post->title) . ' - Discussion');
+		$this->tag->setTitle('게시물 - ' . $this->escaper->escapeHtml($post->title));
 
 		$this->view->post = $post;
 	}
@@ -556,7 +556,7 @@ class DiscussionsController extends Controller
 		 */
 		$post = Posts::findFirstById($id);
 		if (!$post) {
-			$this->flashSession->error('The discussion does not exist');
+			$this->flashSession->error('이 게시물은 존재하지 않습니다');
 			return $this->response->redirect();
 		}
 
@@ -584,7 +584,7 @@ class DiscussionsController extends Controller
 
 			echo $diff->Render($renderer);
 		} else {
-			$this->flash->notice('No history available to show');
+			$this->flash->notice('보여줄 기록이 없습니다');
 		}
 	}
 
@@ -602,7 +602,7 @@ class DiscussionsController extends Controller
 		if (!$post) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post does not exist'
+				'message' => '게시물이 존재하지 않습니다'
 			));
 		}
 
@@ -610,21 +610,21 @@ class DiscussionsController extends Controller
 		if (!$user) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You must log in first to vote'
+				'message' => '당신은 먼저 투표하기 위해 로그인하여야 합니다'
 			));
 		}
 
 		if ($user->votes <= 0) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You don\'t have enough votes available'
+				'message' => '당신은 충분한 투표권이 없습니다'
 			));
 		}
 
 		if (PostsVotes::count(array('posts_id = ?0 AND users_id = ?1', 'bind' => array($post->id, $user->id)))) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You have already voted this post'
+				'message' => '당신은 이미 이 게시물에 투표하셨습니다'
 			));
 		}
 
@@ -677,7 +677,7 @@ class DiscussionsController extends Controller
 		if (!$post) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post does not exist'
+				'message' => '게시물이 존재하지 않습니다'
 			));
 		}
 
@@ -685,21 +685,21 @@ class DiscussionsController extends Controller
 		if (!$user) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You must log in first to vote'
+				'message' => '당신은 먼저 투표하기 위해 로그인하여야 합니다'
 			));
 		}
 
 		if ($user->votes <= 0) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You don\'t have enough votes available'
+				'message' => '당신은 충분한 투표권이 없습니다'
 			));
 		}
 
 		if (PostsVotes::count(array('posts_id = ?0 AND users_id = ?1', 'bind' => array($post->id, $user->id)))) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You have already voted this post'
+				'message' => '당신은 이미 이 게시물에 투표하셨습니다'
 			));
 		}
 
@@ -753,7 +753,7 @@ class DiscussionsController extends Controller
 
 		$this->view->activities = array_reverse($activities);
 
-		$this->tag->setTitle('Recent Activity on the IRC');
+		$this->tag->setTitle('최근 IRC에서 활동내역');
 	}
 
 	/**
@@ -769,7 +769,7 @@ class DiscussionsController extends Controller
 			'limit' => array('number' => 40, 'offset' => 0)
 		));
 
-		$this->tag->setTitle('Recent Activity on the Forum');
+		$this->tag->setTitle('최근 포럼에서 활동 내역');
 	}
 
 	/**
@@ -778,7 +778,7 @@ class DiscussionsController extends Controller
 	public function searchAction()
 	{
 
-		$this->tag->setTitle('Search Results');
+		$this->tag->setTitle('검색 결과');
 
 		list($itemBuilder, $totalBuilder) = $this->prepareQueries();
 
@@ -795,7 +795,7 @@ class DiscussionsController extends Controller
 			->execute(array($queryTerms));
 
 		if (!count($posts)) {
-			$this->flashSession->notice('There are no search results');
+			$this->flashSession->notice('검색결과가 없습니다.');
 			return $this->response->redirect();
 		}
 
@@ -861,7 +861,7 @@ class DiscussionsController extends Controller
 		$this->view->ranking = $ranking;
 		$this->view->total_ranking = count($users);
 
-		$this->tag->setTitle('Profile - ' . $this->escaper->escapeHtml($user->name));
+		$this->tag->setTitle('프로필 - ' . $this->escaper->escapeHtml($user->name));
 	}
 
 	/**
@@ -872,7 +872,7 @@ class DiscussionsController extends Controller
 
 		$usersId = $this->session->get('identity');
 		if (!$usersId) {
-			$this->flashSession->error('You must be logged first');
+			$this->flashSession->error('먼저 로그인하셔야 합니다');
 			return $this->response->redirect();
 		}
 
@@ -887,7 +887,7 @@ class DiscussionsController extends Controller
 			$user->notifications = $this->request->getPost('notifications');
 			if ($user->save()) {
 				$this->session->get('timezone', $user->timezone);
-				$this->flashSession->success('Settings were successfully updated');
+				$this->flashSession->success('설정이 성공적으로 변경되었습니다');
 				return $this->response->redirect();
 			}
 		} else {
@@ -895,7 +895,7 @@ class DiscussionsController extends Controller
 			$this->tag->displayTo('notifications', $user->notifications);
 		}
 
-		$this->tag->setTitle('My Settings');
+		$this->tag->setTitle('나의 설정');
 		$this->tag->setAutoEscape(false);
 
 		$this->view->user = $user;

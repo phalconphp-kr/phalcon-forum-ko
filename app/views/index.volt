@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>{{ get_title(false) }} - Phalcon Framework</title>
+		<title>{{ get_title(false) }} - 팔콘 프레임워크</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		{%- if canonical is defined -%}
-		<link rel="canonical" href="//forum.phalconphp.com/{{ canonical }}"/>
+		<link rel="canonical" href="//forum.phalconphp.kr/{{ canonical }}"/>
 		{%- endif -%}
 		{{- stylesheet_link("//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", false) -}}
 		{{- stylesheet_link("//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css", false) -}}

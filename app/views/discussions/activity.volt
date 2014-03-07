@@ -3,11 +3,11 @@
 <div class="view-discussion container">
 
 	<p>
-		<h1>Recent Activity</h1>
+		<h1>최근 활동</h1>
 	</p>
 
 	<ul class="nav nav-tabs">
-		{%- set orders = ['': 'Forum', '/irc': 'IRC'] %}
+		{%- set orders = ['': '포럼', '/irc': 'IRC'] %}
 		{%- for order, label in orders -%}
 			{%- if order == '' -%}
 			<li class="active">
@@ -27,17 +27,15 @@
 			</td>
 			<td>
 				<div class="activity">
-					<span>{{ link_to('user/' ~ activity.user.id ~ '/' ~ activity.user.login, activity.user.name|e) }} </span>
-
+					<span>{{ link_to('user/' ~ activity.user.id ~ '/' ~ activity.user.login, activity.user.name|e) }} </span> 님이
+					<span class="date"> {{ activity.getHumanCreatedAt() }} </span> 
 					{%- if activity.type == 'U' -%}
-					has joined the forum
+					포럼에 가입하셨습니다.
 					{%- elseif activity.type == 'P' -%}
-					has posted {{ link_to('discussion/' ~ activity.post.id ~ '/' ~ activity.post.slug, activity.post.title|e) }}
+					{{ link_to('discussion/' ~ activity.post.id ~ '/' ~ activity.post.slug, activity.post.title|e) }} 글을 남기셨습니다.
 					{%- elseif activity.type == 'C' -%}
-					has commented in {{ link_to('discussion/' ~ activity.post.id ~ '/' ~ activity.post.slug, activity.post.title|e) }}
+					{{ link_to('discussion/' ~ activity.post.id ~ '/' ~ activity.post.slug, activity.post.title|e) }} 댓글을 남기셨습니다.
 					{%- endif -%}
-
-					<span class="date"> {{ activity.getHumanCreatedAt() }}</span>
 				</div>
 			</td>
 		</tr>

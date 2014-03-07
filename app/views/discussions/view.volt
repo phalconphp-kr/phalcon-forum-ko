@@ -6,22 +6,19 @@
 
 {%- if (post.votes_up - post.votes_down) <= -3 -%}
 	<div class="bs-callout bs-callout-danger">
-		<h4>Too many negative votes</h4>
-		<p>This post has too many negative votes. The cause of this may be irrelevant information, inconsistent data,
-		 spam or aggressive vocabulary or tone, etc.</p>
+		<h4>너무 많은 부정적 투표</h4>
+		<p>이 게시물은 너무 많은 부정적 투표를 받았습니다. 아마도 잘못된 정보, 데이터, 스팸과 같은 안좋은 단어때문일것입니다.</p>
 	</div>
 {%- endif -%}
 
 {%- if post.canHaveBounty() -%}
 {%- set bounty = post.getBounty() -%}
 <div class="bs-callout bs-callout-info">
-	<h4>Bounty available!</h4>
+	<h4>현상금이 가능합니다!</h4>
 	{%- if bounty['type'] == "old" -%}
-	<p>It has been a while and this question still does not have any answers.
-		Answer this question and get additional <span class="label label-info">+{{ bounty['value'] }}</span> points of karma/reputation if the original poster accepts your reply as correct answer</p>
+	<p>이 질문에 아직 아무런 답변도 없습니다.만약 이 질문에 답변을 하시고 질문자가 당신의 답변을 채택한다면 <span class="label label-info">+{{ bounty['value'] }}</span> 점수를 얻으실 것입니다.</p>
 	{%- elseif bounty['type'] == "fast-reply" -%}
-	<p>This post has recently posted.
-		Answer this question and get additional <span class="label label-info">+{{ bounty['value'] }}</span> points of karma/reputation if the original poster accepts your reply as correct answer</p>
+	<p>이 게시물은 최근에 제출되었습니다. 만약 이 질문에 가장 빨리 답변을 해주시고 질문자가 당신의 답변을 채택한다면 <span class="label label-info">+{{ bounty['value'] }}</span> 점수를 얻으실 것입니다.</p>
 	{%- endif -%}
 </div>
 {%- endif -%}
@@ -29,7 +26,7 @@
 <div class="container">
 
 	<ol class="breadcrumb">
-		<li>{{ link_to('', 'Home') }}</a></li>
+		<li>{{ link_to('', '첫화면') }}</a></li>
 		<li>{{ link_to('category/' ~ post.category.id ~ '/' ~ post.category.slug, post.category.name) }}</a></li>
 	</ol>
 
@@ -43,23 +40,23 @@
 			<div class="col-md-4">
 				<table class="table-stats">
 					<td>
-						<label>Created</label><br>
+						<label>생성됨</label><br>
 						{{- post.getHumanCreatedAt() -}}
 					</td>
 					<td>
-						<label>Last Reply</label><br>
-						{{- post.getHumanModifiedAt() ? post.getHumanModifiedAt() : "None" -}}
+						<label>마지막 답변</label><br>
+						{{- post.getHumanModifiedAt() ? post.getHumanModifiedAt() : "없음" -}}
 					</td>
 					<td>
-						<label>Replies</label><br>
+						<label>답변</label><br>
 						{{- post.number_replies -}}
 					</td>
 					<td>
-						<label>Views</label><br>
+						<label>조회수</label><br>
 						{{- post.number_views -}}
 					</td>
 					<td>
-						<label>Votes</label><br>
+						<label>투표수</label><br>
 						{{- post.votes_up - post.votes_down -}}
 					</td>
 				</table>
@@ -78,7 +75,7 @@
 				<div class="posts-buttons" align="right">
 					{% if post.edited_at > 0 %}
 						<span class="action-date action-edit" data-id="{{ post.id }}" data-toggle="modal" data-target="#historyModal">
-							edited <span>{{ post.getHumanEditedAt() }}</span>
+							<span>{{ post.getHumanEditedAt() }}</span> 수정됨
 						</span><br/>
 					{% endif %}
 					<a name="C{{ post.id }}" href="#C{{ post.id }}">
@@ -94,8 +91,8 @@
 				</div>
 				<div class="posts-buttons" align="right">
 					{%- if post.users_id == currentUser or moderator == 'Y' -%}
-						{{ link_to('edit/discussion/' ~ post.id, '<span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit', "class": "btn btn-default btn-xs") }}
-						{{ link_to('delete/discussion/' ~ post.id, '<span class="glyphicon glyphicon-remove"></span>&nbsp;Delete', "class": "btn btn-default btn-xs") }}&nbsp;
+						{{ link_to('edit/discussion/' ~ post.id, '<span class="glyphicon glyphicon-pencil"></span>&nbsp;수정', "class": "btn btn-default btn-xs") }}
+						{{ link_to('delete/discussion/' ~ post.id, '<span class="glyphicon glyphicon-remove"></span>&nbsp;삭제', "class": "btn btn-default btn-xs") }}&nbsp;
 					{%- endif %}
 					{%- if currentUser -%}
 						<a href="#" onclick="return false" class="btn btn-danger btn-xs vote-post-down" data-id="{{ post.id }}">
@@ -129,7 +126,7 @@
 					{%- if reply.accepted == 'Y' -%}
 						<div class="accepted-reply">
 							<span class="glyphicon glyphicon-ok"></span>
-							Accepted<br>answer
+							채택
 						</div>
 					{%- endif -%}
 				</div>
@@ -146,7 +143,7 @@
 					<div class="posts-buttons" align="right">
 						{%- if reply.edited_at > 0 -%}
 							<span class="action-date action-reply-edit" data-id="{{ reply.id }}" data-toggle="modal" data-target="#historyModal">
-								edited <span>{{ reply.getHumanEditedAt() }}</span>
+								<span>{{ reply.getHumanEditedAt() }}</span> 수정됨
 							</span><br/>
 						{%- endif -%}
 						<a name="C{{ reply.id }}" href="#C{{ reply.id }}">
@@ -165,22 +162,22 @@
 							<br>
 							{%- if post.accepted_answer != 'Y' -%}
 								<a class="btn btn-default btn-xs reply-accept" data-id="{{ reply.id }}">
-									<span class="glyphicon glyphicon-ok"></span>&nbsp;Accept Answer
+									<span class="glyphicon glyphicon-ok"></span>&nbsp;채택
 								</a>&nbsp;
 							{%- endif -%}
 						{%- endif -%}
 						{%- if reply.users_id == currentUser or moderator == 'Y' -%}
 							<a class="btn btn-default btn-xs reply-edit" data-id="{{ reply.id }}">
-								<span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp;수정
 							</a>
 							<a class="btn btn-default btn-xs reply-remove" data-id="{{ reply.id }}">
-								<span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+								<span class="glyphicon glyphicon-remove"></span>&nbsp;삭제
 							</a>&nbsp;
 						{%- endif -%}
 						{%- if currentUser -%}
 							{%- if reply.users_id != currentUser -%}
 							<a class="btn btn-default btn-xs reply-reply" data-id="{{ reply.id }}">
-								<span class="glyphicon glyphicon-share-alt"></span>&nbsp;Reply
+								<span class="glyphicon glyphicon-share-alt"></span>&nbsp;답변 
 							</a>&nbsp;
 							{%- endif -%}
 							<a href="#" onclick="return false" class="btn btn-danger btn-xs vote-reply-down" data-id="{{ reply.id }}">
@@ -215,8 +212,8 @@
 				<div class="col-md-11">
 
 					<ul class="nav nav-tabs preview-nav">
-						<li class="active"><a href="#" onclick="return false">Comment</a></li>
-						<li><a href="#" onclick="return false">Preview</a></li>
+						<li class="active"><a href="#" onclick="return false">댓글</a></li>
+						<li><a href="#" onclick="return false">미리보기</a></li>
 						<li class="pull-right">{{ link_to('help/markdown', 'Help', 'parent': '_new') }}</li>
 					</ul>
 
@@ -230,10 +227,10 @@
 						</p>
 						<p>
 							<div class="pull-left">
-								{{- link_to('', 'Back to discussions') -}}
+								{{- link_to('', '게시판으로 돌아가기') -}}
 							</div>
 							<div class="pull-right">
-								<button type="submit" class="btn btn-success">Add Comment</button>
+								<button type="submit" class="btn btn-success">댓글 달기</button>
 							</div>
 						</p>
 					</form>
@@ -242,10 +239,10 @@
 				<div class="col-md-1 small" align="center"></div>
 				<div class="col-md-11">
 					<div class="pull-left">
-						{{- link_to('', 'Back to discussions') -}}
+						{{- link_to('', '게시판으로 돌아가기') -}}
 					</div>
 					<div class="pull-right">
-						{{- link_to('login/oauth/authorize', 'Log In to Comment', 'class': 'btn btn-info') -}}
+						{{- link_to('login/oauth/authorize', '로그인하여 댓글달기', 'class': 'btn btn-info') -}}
 					</div>
 				</div>
 			{%- endif -%}
@@ -260,13 +257,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="historyModalLabel">History</h4>
+				<h4 class="modal-title" id="historyModalLabel">역사</h4>
 			</div>
 			<div class="modal-body" id="historyBody">
 				Loading...
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -277,12 +274,12 @@
 		<div class="modal-content">
 			<div class="modal-header alert-danger">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="errorModalLabel">Error</h4>
+				<h4 class="modal-title" id="errorModalLabel">에러</h4>
 			</div>
 			<div class="modal-body" id="errorBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -296,14 +293,14 @@
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="replyModalLabel">Add Reply</h4>
+					<h4 class="modal-title" id="replyModalLabel">답변 달기</h4>
 				</div>
 
 				<div class="modal-body" id="errorBody">
 					<ul class="nav nav-tabs preview-nav">
-						<li class="active"><a href="#" onclick="return false">Comment</a></li>
-						<li><a href="#" onclick="return false">Preview</a></li>
-						<li class="pull-right">{{ link_to('help/markdown', 'Help', 'parent': '_new') }}</li>
+						<li class="active"><a href="#" onclick="return false">댓글</a></li>
+						<li><a href="#" onclick="return false">미리보기</a></li>
+						<li class="pull-right">{{ link_to('help/markdown', '도움말', 'parent': '_new') }}</li>
 					</ul>
 					<p>
 						<div id="reply-comment-box">
@@ -316,7 +313,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 					<input type="submit" class="btn btn-success" value="Add Reply"/>
 				</div>
 			</div>

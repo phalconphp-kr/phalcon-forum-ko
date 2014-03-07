@@ -2,27 +2,25 @@
 <div class="container help">
 
 	<ol class="breadcrumb">
-		<li>{{ link_to('', 'Home') }}</a></li>
-		<li>{{ link_to('help', 'Help') }}</a></li>
+		<li>{{ link_to('', '첫화면') }}</a></li>
+		<li>{{ link_to('help', '도움말') }}</a></li>
 	</ol>
 
-	<h1>Feedback system</h1>
+	<h1>피드백 시스템</h1>
 
 	<p>
-		Posts and comments can be voted up or down. Voting enable the community to
-		collectively identify the best (and worst) contributions. However, votes aren't unlimited.
-		Every time you win 50 points of karma the forum assing you a vote.
-		You can only vote once every post or comment. You can spend
-		your votes by voting positively or negatively posts and comments in the forum.
+		글과 댓글은 투표에 따라 위나 아래로 이동 될 수 있습니다. 투표는 커뮤니티에 좋거나 나쁜 행위를 식별을 가능하게 합니다.
+		그러나, 투표는 제한되지 않습니다. 당신은 카르마 50점을 매번 투표에서 이길 때 마다 가질수 있고 각 게시물과 댓글에 한번씩만 투표 할 수 있습니다.
+		당신의 투표로 포럼의 게시물과 댓글을 좋거나 나쁘게 만들 수 있습니다.
 	</p>
 
 	<p>
-		When your posts or comments have been voted your karma is increased or decreased depending on the karma of who you get the vote.
-		When you receive votes from the original poster you get an extra number of points on your karma.
+		게시물이나 코멘트가 도움이 되었을 때 카르마는 투표를 받을 사람의 카르마에 따라 증가 또는 감소됩니다. 
+		원래 게시물에서 도움을 받을 때에는 당신은 카르마에 포인트의 추가 점수를 얻습니다. 
 	</p>
 
 	<p>
-		You can see how many votes you have on your {{ link_to('settings', 'settings') }} page.
+		당신은 {{ link_to('settings', '설정') }} 페이지에서 얼마나 많은 투표를 했는지 참조 할 수 있습니다.
 	</p>
 
 </div>

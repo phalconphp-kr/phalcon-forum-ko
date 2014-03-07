@@ -53,7 +53,7 @@ class Posts extends Model
 			'alias' => 'category',
 			'reusable' => true,
 			'foreignKey' => array(
-				'message' => 'The category is not valid'
+				'message' => '분류가 선택되지 않았습니다.'
 			)
 		));
 
@@ -134,11 +134,6 @@ class Posts extends Model
 			 */
 			$this->category->number_posts++;
 			$this->category->save();
-
-			/**
-			 * Queue notifications to be sent
-			 */
-			$this->getDI()->getQueue()->put($toNotify);
 		}
 	}
 
@@ -187,7 +182,7 @@ class Posts extends Model
 		}
 		return $users;
 	}
-
+	
 	public function getHumanCreatedAt()
 	{
 		$diff = time() - $this->created_at;
@@ -195,12 +190,12 @@ class Posts extends Model
 			return date('M \'y', $this->created_at);
 		} else {
 			if ($diff > 86400) {
-				return ((int) ($diff / 86400)) . 'd ago';
+				return ((int) ($diff / 86400)) . '일 전에';
 			} else {
 				if ($diff > 3600) {
-					return ((int) ($diff / 3600)) . 'h ago';
+					return ((int) ($diff / 3600)) . '시간 전에';
 				} else {
-					return ((int) ($diff / 60)) . 'm ago';
+					return ((int) ($diff / 60)) . '분 전에';
 				}
 			}
 		}
@@ -213,12 +208,12 @@ class Posts extends Model
 			return date('M \'y', $this->edited_at);
 		} else {
 			if ($diff > 86400) {
-				return ((int) ($diff / 86400)) . 'd ago';
+				return ((int) ($diff / 86400)) . '일 전에';
 			} else {
 				if ($diff > 3600) {
-					return ((int) ($diff / 3600)) . 'h ago';
+					return ((int) ($diff / 3600)) . '시간 전에';
 				} else {
-					return ((int) ($diff / 60)) . 'm ago';
+					return ((int) ($diff / 60)) . '분 전에';
 				}
 			}
 		}
@@ -232,12 +227,12 @@ class Posts extends Model
 				return date('M \'y', $this->modified_at);
 			} else {
 				if ($diff > 86400) {
-					return ((int) ($diff / 86400)) . 'd ago';
+					return ((int) ($diff / 86400)) . '일 전에';
 				} else {
 					if ($diff > 3600) {
-						return ((int) ($diff / 3600)) . 'h ago';
+						return ((int) ($diff / 3600)) . '시간 전에';
 					} else {
-						return ((int) ($diff / 60)) . 'm ago';
+						return ((int) ($diff / 60)) . '분 전에';
 					}
 				}
 			}

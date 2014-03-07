@@ -3,11 +3,11 @@
 <div class="view-discussion container">
 
 	<p>
-		<h1>Recent Activity</h1>
+		<h1>최근 활동</h1>
 	</p>
 
 	<ul class="nav nav-tabs">
-		{% set orders = ['': 'Forum', '/irc': 'IRC'] %}
+		{% set orders = ['': '포럼', '/irc': 'IRC'] %}
 		{% for order, label in orders %}
 			{% if order == '' %}
 			<li class="active">

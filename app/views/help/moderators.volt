@@ -2,24 +2,23 @@
 <div class="container help">
 
 	<ol class="breadcrumb">
-		<li>{{ link_to('', 'Home') }}</a></li>
-		<li>{{ link_to('help', 'Help') }}</a></li>
+		<li>{{ link_to('', '첫화면') }}</a></li>
+		<li>{{ link_to('help', '도움말') }}</a></li>
 	</ol>
 
-	<h1>Moderation</h1>
+	<h1>관리</h1>
 
 	<p>
-		Moderators have special authority, they are community facilitators, they can edit or delete your posts or comments.
-		In order to maintain our community, moderators reserve the right to remove any content and any user account for any reason at any time.
+		관리자는 귀하의 게시물이나 의견을 편집하거나 삭제할 수 있습니다. ​​그들은 커뮤니티의 운영을 위해 특별한 권한이 있습니다. 
+		우리 커뮤니티를 유지하기 위해 관리자는 언제든지 어떤 이유로든지 콘텐츠 및 사용자 계정을 삭제 할 수 있는 권리를 보유합니다. 
 	</p>
 
 	<p>
-		Most of the time, moderation will be limited to correcting small details in posts or comments, improve grammar,
-		fix occasional details in the code, fix links, etc.
+		대부분 경우는 적당히 문법을 개선이나 게시물이나 댓글에 작은 세부 사항을 수정같이 제한적이며 코드에서 가끔 세부 사항을 수정과 링크를 ​​해결합니다. 
 	</p>
 
 	<p>
-		A moderator is not required to answer questions or make decisions.
+		관리자가 질문에 대한 답변을 하거나 결정을 내릴 필요는 없습니다. 
 	</p>
 
 </div>

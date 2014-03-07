@@ -3,11 +3,11 @@
 
 	<ul class="nav nav-tabs">
 		{%- set orders = [
-			'new': 'All discussions',
-			'hot': 'Hot',
-			'unanswered': 'Unanswered',
-			'my': 'My discussions',
-			'answers':'My answers'
+			'new': '새로운 글',
+			'hot': '활발한 글',
+			'unanswered': '답변 없음',
+			'my': '나의 글',
+			'answers':'나의 답변'
 		] -%}
 		{%- for order, label in orders -%}
 			{%- if (order == 'my' or order == 'answers') and !session.get('identity') -%}
@@ -30,13 +30,13 @@
 	<div align="center">
 		<table class="table table-striped list-discussions" width="90%">
 			<tr>
-				<th width="50%">Topic</th>
-				<th class="hidden-xs">Users</th>
-				<th class="hidden-xs">Category</th>
-				<th class="hidden-xs">Replies</th>
-				<th class="hidden-xs">Views</th>
-				<th class="hidden-xs">Created</th>
-				<th class="hidden-xs">Last Reply</th>
+				<th width="50%">제목</th>
+				<th class="hidden-xs">유저</th>
+				<th class="hidden-xs">분류</th>
+				<th class="hidden-xs">답변</th>
+				<th class="hidden-xs">조회</th>
+				<th class="hidden-xs">생성</th>
+				<th class="hidden-xs">마지막 답변</th>
 			</tr>
 		{%- for post in posts -%}
 			<tr class="{% if (post.votes_up - post.votes_down) <= -3 %}post-negative{% endif %}">
@@ -47,10 +47,10 @@
 					{%- endif -%}
 					{{- link_to('discussion/' ~ post.id ~ '/' ~ post.slug, post.title|e) -}}
 					{%- if post.accepted_answer == "Y" -%}
-						&nbsp;<span class="label label-success">SOLVED</span>
+						&nbsp;<span class="label label-success">해결</span>
 					{%- else -%}
 						{%- if post.canHaveBounty() -%}
-							&nbsp;<span class="label label-info">BOUNTY</span>
+							&nbsp;<span class="label label-info">현상금</span>
 						{%- endif -%}
 					{%- endif -%}
 
@@ -98,5 +98,5 @@
 </div>
 
 {%- else -%}
-	<div>There are no posts here</div>
+	<div>여기에 글이 없습니다.</div>
 {%- endif -%}

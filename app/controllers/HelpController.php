@@ -28,7 +28,7 @@ class HelpController extends Controller
 
 	public function initialize()
 	{
-		$this->tag->setTitle('Help');
+		$this->tag->setTitle('도움말');
 		$this->view->setTemplateBefore(array('discussions'));
 	}
 

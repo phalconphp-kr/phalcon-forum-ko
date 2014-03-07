@@ -382,7 +382,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		 */
 		$postReply = PostsReplies::findFirstById($id);
 		if (!$postReply) {
-			$this->flashSession->error('The reply does not exist');
+			$this->flashSession->error('답변이 존재하지 않습니다');
 			return $this->response->redirect();
 		}
 
@@ -417,7 +417,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 
 			echo $diff->Render($renderer);
 		} else {
-			$this->flash->notice('No history available to show');
+			$this->flash->notice('보여줄 기록이 없습니다');
 		}
 	}
 
