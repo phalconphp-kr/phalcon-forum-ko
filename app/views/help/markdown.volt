@@ -15,7 +15,7 @@
 	</p>
 
 	<p>
-		 <a href="http://scriptogr.am/myevan/post/markdown-syntax-guide-for-scriptogram" target="_new">Song Young-Jin 님의 마크 다운 문법 가이드</a>
+		 <a href="http://scriptogr.am/myevan/post/markdown-syntax-guide-for-scriptogram" target="_blank">Song Young-Jin 님의 마크 다운 문법 가이드</a>
 	</p>
 
 </div>

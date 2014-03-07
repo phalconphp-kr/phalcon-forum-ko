@@ -34,7 +34,7 @@
 					<ul class="nav nav-tabs preview-nav">
 						<li class="active"><a href="#" onclick="return false">쓰기</a></li>
 						<li><a href="#" onclick="return false">미리보기</a></li>
-						<li class="pull-right">{{ link_to('help/markdown', '도움말', 'parent': '_new') }}</li>
+						<li class="pull-right">{{ link_to('help/markdown', '도움말', 'parent': '_blank') }}</li>
 					</ul>
 
 					<div id="comment-box">
