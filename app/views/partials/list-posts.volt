@@ -98,5 +98,5 @@
 </div>
 
 {%- else -%}
-	<div>여기에 글이 없습니다.</div>
+	<div class="container">글이 없습니다.</div>
 {%- endif -%}
