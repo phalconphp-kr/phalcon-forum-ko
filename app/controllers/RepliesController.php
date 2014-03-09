@@ -153,7 +153,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 					$postReply->post->save();
 				}
 
-				$this->flashSession->success('Reply was deleted successfully');
+				$this->flashSession->success('답변이 성공적으로 삭제되었습니다');
 			}
 
 
@@ -177,7 +177,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$postReply) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post reply does not exist'
+				'message' => '게시물이 존재하지 않습니다'
 			));
 		}
 
@@ -185,14 +185,14 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$user) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You must log in first to vote'
+				'message' => '당신은 투표하기전에 먼저 로그인하셔야 합니다'
 			));
 		}
 
 		if ($user->votes <= 0) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You don\'t have enough votes available'
+				'message' => '당신은 투표권이 충분하지 않습니다'
 			));
 		}
 
@@ -200,14 +200,14 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$post) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post associated to the reply does not exist'
+				'message' => '답변에 연결된 게시물이 존재하지 않습니다'
 			));
 		}
 
 		if ($post->deleted) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post associated to the reply is deleted'
+				'message' => '답변에 연결된 게시물이 삭제되었습니다'
 			));
 		}
 
@@ -218,7 +218,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if ($voted) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You have already voted this reply'
+				'message' => '당신은 이미 답변에 투표를 하였습니다'
 			));
 		}
 
@@ -280,7 +280,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$postReply) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post reply does not exist'
+				'message' => '게시물이 존재하지 않습니다'
 			));
 		}
 
@@ -288,14 +288,14 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$user) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You must log in first to vote'
+				'message' => '당신은 투표하기전에 먼저 로그인하셔야 합니다'
 			));
 		}
 
 		if ($user->votes <= 0) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You don\'t have enough votes available'
+				'message' => '당신은 투표권이 충분하지 않습니다'
 			));
 		}
 
@@ -303,14 +303,14 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$post) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post associated to the reply does not exist'
+				'message' => '답변에 연결된 게시물이 존재하지 않습니다'
 			));
 		}
 
 		if ($post->deleted) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post associated to the reply is deleted'
+				'message' => '답변에 연결된 게시물이 삭제되었습니다'
 			));
 		}
 
@@ -321,7 +321,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if ($voted) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You have already voted this reply'
+				'message' => '당신은 이미 답변에 투표를 하였습니다'
 			));
 		}
 
@@ -435,7 +435,7 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$postReply) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post reply does not exist'
+				'message' => '게시물이 존재하지 않습니다'
 			));
 		}
 
@@ -443,35 +443,35 @@ class RepliesController extends \Phalcon\Mvc\Controller
 		if (!$user) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You must log in first to vote'
+				'message' => '당신은 투표하기전에 먼저 로그인하셔야 합니다'
 			));
 		}
 
 		if ($postReply->accepted == 'Y') {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'This reply is already accepted as answer'
+				'message' => '이미 답변이 채택되었습니다'
 			));
 		}
 
 		if ($postReply->post->deleted) {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'Post associated to the reply is deleted'
+				'message' => '답변에 연결된 게시물이 삭제되었습니다'
 			));
 		}
 
 		if ($postReply->post->accepted_answer == 'Y') {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'This post already has an accepted answer'
+				'message' => '이 게시물은 이미 답변을 채택했습니다'
 			));
 		}
 
 		if ($postReply->post->users_id != $user->id && $user->moderator != 'Y') {
 			return $response->setJsonContent(array(
 				'status' => 'error',
-				'message' => 'You can\'t accept this answer as correct'
+				'message' => '당신은 이 답변을 채택 할수 없습니다'
 			));
 		}
 
