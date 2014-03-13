@@ -8,7 +8,8 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		  </button>
-		  {{ link_to('', 'Phosphorum', 'class': 'navbar-brand') }}
+		  <a class="navbar-brand" href="http://phalconphp.kr">팔콘코리아</a>
+		  <a class="navbar-brand" href="http://forum.phalconphp.kr">포럼</a>
 		</div>
 
 		<div class="collapse navbar-collapse">
