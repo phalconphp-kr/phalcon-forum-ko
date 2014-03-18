@@ -8,8 +8,11 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		  </button>
-		  <a class="navbar-brand" href="http://phalconphp.kr">팔콘코리아</a>
-		  <a class="navbar-brand" href="http://forum.phalconphp.kr">포럼</a>
+		  <div class="navbar-brand">
+			  <a href="http://phalconphp.kr">팔콘한국</a> 
+			  /
+			  <a href="http://forum.phalconphp.kr">포럼</a>
+		  </div>
 		</div>
 
 		<div class="collapse navbar-collapse">
