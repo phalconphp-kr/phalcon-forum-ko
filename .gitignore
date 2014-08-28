@@ -1,4 +1,5 @@
 .hg/
+.htaccess
 .hgignore
 .DS_Store
 app/cache/volt/*.php

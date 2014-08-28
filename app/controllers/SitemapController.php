@@ -52,7 +52,7 @@ class SitemapController extends \Phalcon\Mvc\Controller
 		$urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
 		$url = $sitemap->createElement('url');
-		$url->appendChild($sitemap->createElement('loc', 'http://forum.phalconphp.kr/'));
+		$url->appendChild($sitemap->createElement('loc', 'http://phalconphp.kr/forum/'));
 		$url->appendChild($sitemap->createElement('changefreq', 'daily'));
 		$url->appendChild($sitemap->createElement('priority', '1.0'));
 		$urlset->appendChild($url);
@@ -79,7 +79,7 @@ class SitemapController extends \Phalcon\Mvc\Controller
 			$postKarma = $post->karma / ($karma + 100);
 
 			$url = $sitemap->createElement('url');
-			$url->appendChild($sitemap->createElement('loc', 'http://forum.phalconphp.kr/discussion/' . $post->id . '/' . $post->slug));
+			$url->appendChild($sitemap->createElement('loc', 'http://phalconphp.kr/forum/discussion/' . $post->id . '/' . $post->slug));
 			$url->appendChild($sitemap->createElement('priority', $postKarma > 0.7 ? sprintf("%0.1f", $postKarma) : sprintf("%0.1f", $postKarma + 0.25)));
 			$url->appendChild($sitemap->createElement('lastmod', $modifiedAt->format('Y-m-d\TH:i:s\Z')));
 			$urlset->appendChild($url);

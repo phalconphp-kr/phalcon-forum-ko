@@ -11,7 +11,7 @@
 		  <div class="navbar-brand">
 			  <a href="http://phalconphp.kr">팔콘한국</a> 
 			  /
-			  <a href="http://forum.phalconphp.kr">포럼</a>
+			  <a href="http://phalconphp.kr/forum/">포럼</a>
 		  </div>
 		</div>
 
